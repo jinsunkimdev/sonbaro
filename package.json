@@ -1,0 +1,32 @@
+{
+  "name": "sonbaro",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "An app designed to help you discover great restaurants based on your current location!",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinsunkimdev/sonbaro.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "author": "Jinsun Kim<jinsunkim94@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jinsunkimdev/sonbaro/issues"
+  },
+  "homepage": "https://github.com/jinsunkimdev/sonbaro#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "geoip-lite": "^1.4.7",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4"
+  }
+}

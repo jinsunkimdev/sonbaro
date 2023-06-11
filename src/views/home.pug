@@ -1,0 +1,9 @@
+extends base.pug
+include mixins/restaurant
+
+block content 
+    h2 Welcome
+    each restaurant in restaurants
+            +restaurant(restaurant)
+    else
+        li No restaurants

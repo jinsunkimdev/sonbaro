@@ -1,0 +1,7 @@
+mixin restaurant(restaurant)
+    div 
+        h4 
+            a(href=`/restaurants/${restaurant.id}`)=restaurant.name
+        ul 
+            img(src=`${restaurant.logo_image}`)
+            li #{restaurant.access}

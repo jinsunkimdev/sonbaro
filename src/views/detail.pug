@@ -1,0 +1,10 @@
+extends base.pug
+
+block content
+    h2 #{restaurants.name}
+        p
+        ul 
+            img(src=`${restaurants.logo_image}`)
+            li #{restaurants.id}
+            li #{restaurants.address}
+            li #{restaurants.open}
