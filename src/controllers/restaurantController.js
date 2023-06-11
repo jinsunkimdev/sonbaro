@@ -1,25 +1,15 @@
 import axios from "axios";
 import 'dotenv/config';
 import geoip from "geoip-lite";
+import jsdom from "jsdom";
 let restaurants=[];
+export const location = (req, res) => { 
+  res.render("location", {pageTitle: "Location"});
+};
 export const trending = (req, res) => {
-//Get user's IP and Location
-//   const getIpFromRequest = req => {
-//     let ips = (
-//         req.headers['cf-connecting-ip'] ||
-//         req.headers['x-real-ip'] ||
-//         req.headers['x-forwarded-for'] ||
-//         req.connection.remoteAddress || ''
-//     ).split(',');
-
-//     return ips[0].trim();
-// };
-//    const userIp = "60.114.143.235"//getIpFromRequest(req);
-//    const geo = geoip.lookup(userIp);
-//    console.log(geo)
-//    const latitude = geo.ll[0];
-//    const longitude = geo.ll[1];
-//    console.log(latitude,longitude)
+  const latitude = req.query.lat;
+  const longitude = req.query.lng;
+  console.log(`From trending: ${latitude}, ${longitude}`);
    axios
    .get(process.env.SEARCH_END_POINT, {
      params: {
@@ -31,6 +21,8 @@ export const trending = (req, res) => {
      }
    }).then(response => {
        restaurants = response.data.results.shop;
+       console.log(restaurants[0])
+       restaurants = restaurants[0]
        res.render("Home", {pageTitle: "Home",restaurants});
        // レストラン情報を処理する必要がある場合はここで行います
      })
