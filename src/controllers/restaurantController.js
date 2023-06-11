@@ -1,36 +1,80 @@
-import axios from "axios";
+
 import 'dotenv/config';
-import geoip from "geoip-lite";
-import jsdom from "jsdom";
-let restaurants=[];
-export const location = (req, res) => { 
-  res.render("location", {pageTitle: "Location"});
-};
-export const trending = (req, res) => {
-  const latitude = req.query.lat;
-  const longitude = req.query.lng;
-  console.log(`From trending: ${latitude}, ${longitude}`);
-   axios
-   .get(process.env.SEARCH_END_POINT, {
-     params: {
-      key: process.env.RECRUIT_API_KEY,
-          lat: latitude,
-          lng: longitude,
-          range: 3, // 検索範囲（半径3km）
+import axios from 'axios';
+let restaurants = [];
+let lat,lng = 0;
+let range;
+export const getTrending = (req, res) => {
+  // Get the latitude and longitude from the request query parameters
+   lat = req.query.lat;
+   lng = req.query.lng;
+  lat= parseFloat(lat).toFixed(6).toString();
+  lng= parseFloat(lng).toFixed(6).toString();
+  console.log("lat,lng=",lat, lng)
+  // range = req.body.range;
+  if(range == undefined && range == null && range == 0){
+    range = 3;
+  }
+  console.log(`get range=${range}`);
+    //get data from api
+     axios.get(process.env.SEARCH_END_POINT, {
+      params: {
+          key: process.env.RECRUIT_API_KEY,
+          lat: lat,
+          lng: lng,
+          range: range, // 検索範囲（半径3km）
           format: 'json'
-     }
-   }).then(response => {
+      }
+    }).then(response => {
        restaurants = response.data.results.shop;
-       console.log(restaurants[0])
-       restaurants = restaurants[0]
-       res.render("Home", {pageTitle: "Home",restaurants});
-       // レストラン情報を処理する必要がある場合はここで行います
-     })
-     .catch(error => {
-       console.error(error);
-       res.status(500).send(error);
-     })
-} 
+      //  console.log(restaurants)
+      })
+      .catch(error => {
+        console.error(error);
+        res.status(500).send(error);
+      })
+      res.render("home", {pageTitle: "Home", restaurants});
+};
+export const postTrending = (req, res) => {
+  lat = req.query.lat;
+  lng = req.query.lng;
+ lat= parseFloat(lat).toFixed(6).toString();
+ lng= parseFloat(lng).toFixed(6).toString();
+ console.log("lat,lng=",lat, lng)
+ range = req.body.range;
+ if(range == undefined && range == null && range == 0){
+   range = 3;
+ }
+  axios.get(process.env.SEARCH_END_POINT, {
+    params: {
+      key: process.env.RECRUIT_API_KEY,
+      lat: lat,
+      lng: lng,
+      range: range,
+      format: 'json'
+    }
+  })
+    .then(response => {
+      restaurants = response.data.results.shop;
+      console.log(restaurants)
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send(error);
+    });
+      res.render("home", {pageTitle: "Home", restaurants});
+};
+
+
+
+
+
+
+
+
+
+
+
 export const detail =(req, res) => {
     const {id} = req.params;
      axios
@@ -38,10 +82,7 @@ export const detail =(req, res) => {
        params: {
         id: id,
         key: process.env.RECRUIT_API_KEY,
-         // lat: latitude,
-         // lng: longitude,
-        //  range: 3, // 検索範囲（半径3km）
-         format: 'json'
+        format: 'json'
        }
      }).then(response => {
          restaurants = response.data.results.shop;

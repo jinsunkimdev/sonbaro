@@ -1,9 +1,51 @@
-extends base.pug
 include mixins/restaurant
-
-block content 
-    h2 Welcome
-    each restaurant in restaurants
-            +restaurant(restaurant)
+doctype html
+html
+  head
+    title #{pageTitle} | Sonbaro
+    link(rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css")
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script.
+      window.onload = getLocation;
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          console.log('Geolocation is not supported by this browser.');
+        }
+      }
+      function showPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        // Make AJAX request to server with latitude and longitude
+        $.ajax({
+          url: '/',
+          type: 'GET',
+          data: {
+            lat: latitude,
+            lng: longitude
+          },
+          success: function(response) {
+            console.log("succeess")
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+  body
+    h2 Welcome #{pageTitle}
+    form(action="/", method="post")
+        select(name="range")
+            option(value="1") 1
+            option(value="2") 2
+            option(value="3", selected) 3
+            option(value="4") 4
+            option(value="5") 5
+        button(type="submit") Confirm
+    if restaurants && restaurants.length > 0
+      each restaurant in restaurants
+        +restaurant(restaurant)
     else
         li No restaurants
+    include partials/footer.pug
