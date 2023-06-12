@@ -34,18 +34,30 @@ html
         });
       }
   body
-    h2 Welcome #{pageTitle}
-    form(action="/", method="post")
-        select(name="range")
-            option(value="1") 1
-            option(value="2") 2
-            option(value="3", selected) 3
-            option(value="4") 4
-            option(value="5") 5
-        button(type="submit") Confirm
-    if restaurants && restaurants.length > 0
-      each restaurant in restaurants
-        +restaurant(restaurant)
-    else
-        li No restaurants
+    header
+        h1=pageTitle
+        nav 
+            ul 
+                li 
+                    a(href="/") Home
+                li
+                    a(href="/search") Search
+                li 
+                    a(href="/join") Join
+    main 
+        if errorMessage
+            span= errorMessage
+        form(method="POST")
+            select(name="range")
+                option(value="1") 1
+                option(value="2") 2
+                option(value="3", selected) 3
+                option(value="4") 4
+                option(value="5") 5
+            button(type="submit") Confirm
+        if restaurants && restaurants.length > 0
+        each restaurant in restaurants
+            +restaurant(restaurant)
+        else
+            li No restaurants
     include partials/footer.pug

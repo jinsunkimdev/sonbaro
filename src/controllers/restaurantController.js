@@ -1,5 +1,5 @@
 
-import 'dotenv/config';
+// import 'dotenv/config';
 import axios from 'axios';
 let restaurants = [];
 let lat,lng = 0;
@@ -27,11 +27,13 @@ export const getTrending = (req, res) => {
       }
     }).then(response => {
        restaurants = response.data.results.shop;
-      //  console.log(restaurants)
+       if(restaurants.length == 0)
+       {
+       return res.status(404).render("home", {pageTitle: "Error", errorMassage: "検索結果がありません。"});
+       }
       })
       .catch(error => {
-        console.error(error);
-        res.status(500).send(error);
+        return res.status(500).render("home", {pageTitle: "Error", errorMassage: "エラーが発生しました。"});
       })
       res.render("home", {pageTitle: "Home", restaurants});
 };
