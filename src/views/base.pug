@@ -10,10 +10,16 @@ html(lang="ja")
                 ul 
                     li 
                         a(href="/") Home
-                    li
-                        a(href="/search") Search
-                    li 
-                        a(href="/join") Join
+                    if loggedIn
+                        li
+                            a(href="/logout") Logout
+                        li 
+                            p #{loggedInUser.name}
+                    else
+                        li
+                            a(href="/join") Join
+                        li 
+                            a(href="/login") Login
         main 
             block content
     include partials/footer.pug
