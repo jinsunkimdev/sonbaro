@@ -17,9 +17,12 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(
     session({
-      secret: "Hello!",
+      secret: process.env.COOKIE_SECRET,
       resave: false,
       saveUninitialized: false,
+    //   cookie: {
+    //     maxAge: 20000,
+    //     }
       store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
     })
   );
